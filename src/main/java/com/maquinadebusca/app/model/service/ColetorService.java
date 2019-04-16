@@ -117,10 +117,10 @@ public class ColetorService {
 				URL urlH = new URL(urlDocumento); 
 				hostService.addLink(documento, urlH.getHost()); 
 				
-				if(link.getDocumento() == null) {
+				/*if(link.getDocumento() == null) {
 					link.setDocumento(documento);
 					linkService.addLink(link);
-				}
+				}*/
 			}
 		} catch (Exception e) {
 			System.out.println("\n\n\n Erro ao coletar a página! \n\n\n");

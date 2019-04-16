@@ -63,27 +63,6 @@ public class HostService {
 		host.addDocumento(documento); 
 		
 		return hr.save(host);
-	}
-
-
-	
-	public Host create() {
-		Link l = new Link();
-		l.setUltimaColeta(null);
-		l.setUrl("teste");
-		
-		Documento d =  new Documento();
-		d.setTexto("teste");
-		d.setUrl("teste");
-		d.setVisao("teste");
-		d.getLinks().add(l);
-		
-		Host h = new Host();
-		h.getDocumentos().add(d);
-		h.setQtdPaginas(1);
-		h.setHost("teste"); 
-		
-		return hr.save(h);
-	}
+	} 
 	
 }

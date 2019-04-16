@@ -39,6 +39,7 @@ public class Link implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@NotBlank
 	@Column(unique=true, nullable=false, length = 200) 
 	private String url;
 
