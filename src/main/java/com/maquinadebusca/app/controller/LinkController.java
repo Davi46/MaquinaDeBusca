@@ -12,13 +12,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.maquinadebusca.app.mensagem.Mensagem;
 import com.maquinadebusca.app.model.Link;
-import com.maquinadebusca.app.model.service.LinkService;
-import com.mysql.fabric.Response;
+import com.maquinadebusca.app.model.service.LinkService; 
 
 @RestController
 @RequestMapping("/link") // URL: http://localhost:8080/link
@@ -122,7 +122,35 @@ public class LinkController {
 					new Mensagem("erro", "não foi possível inserir o link informado no banco de dados", e.getMessage()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
+
+		return resposta;
+	}
+
+	// Request for: http://localhost:8080/link/update
+	@PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Object> updateLink(@RequestBody @Valid Link link, BindingResult resultado) {
+		ResponseEntity<Object> resposta = null;
+		try {
+			if (resultado.hasErrors()) {
+				resposta = new ResponseEntity<Object>(
+						new Mensagem("erro", "Os dados não foram informados corretamente!", null),
+						HttpStatus.INTERNAL_SERVER_ERROR);
+			} else {
+				link = linkService.salvarLink(link);
+				if ((link != null) && (link.getId() > 0)) {
+					resposta = new ResponseEntity<Object>(link, HttpStatus.OK);
+				} else {
+					resposta = new ResponseEntity<Object>(
+							new Mensagem("erro", "não foi possível inserir o link informado no banco de dados", null),
+							HttpStatus.INTERNAL_SERVER_ERROR);
+				}
+			}
+		} catch (Exception e) {
+			resposta = new ResponseEntity<Object>(
+					new Mensagem("erro", "não foi possível inserir o link informado no banco de dados", e.getMessage()),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
 		return resposta;
 	}
 }

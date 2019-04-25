@@ -19,10 +19,10 @@ public class LinkService {
 	@Autowired
 	private LinkRepository lr;
 
-	public Link addLink(Link link) {
+	public Link saveLink(Link link) {
 		return lr.save(link);
-	}
- 
+	} 
+	
 	public List<Link> getLinks() {
 		Iterable<Link> Links = lr.findAll();
 		List<Link> resposta = new LinkedList<Link>();
@@ -104,6 +104,29 @@ public class LinkService {
 		}
 		
 		return linksSementes;
+	}
+	
+	public List<Link> getUrlsColetar(){
+		List<Link> links = getLinks();
+		List<Link> linksSementes = new ArrayList<Link>(); ;
+		for (Link link : links) { 
+			if(link.getUltimaColeta() == null) {
+				linksSementes.add(link);
+			}
+		}
+		
+		return linksSementes;
+	}
+	
+	public Link getProxUrlColetar() {
+		for (Link link : getLinks()) { 
+			if(link.getUltimaColeta() == null) {
+				return link;
+			}
+		}
+		
+		return null;
+		
 	}
 
 }

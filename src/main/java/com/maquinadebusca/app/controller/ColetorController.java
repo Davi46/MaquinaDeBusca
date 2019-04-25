@@ -20,6 +20,6 @@ public class ColetorController {
 
 	@GetMapping(value = "/iniciar", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity iniciar() throws MalformedURLException {
-		return new ResponseEntity (cs.executar (), HttpStatus.OK);
+		return new ResponseEntity (cs.executar (), HttpStatus.OK);  
 	}  
 }
