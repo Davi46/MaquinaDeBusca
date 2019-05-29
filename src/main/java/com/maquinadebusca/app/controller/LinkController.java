@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.maquinadebusca.app.mensagem.Mensagem;
 import com.maquinadebusca.app.model.Link;
-import com.maquinadebusca.app.model.service.LinkService; 
+import com.maquinadebusca.app.model.ResultadoPagina;
+import com.maquinadebusca.app.model.service.LinkService;
 
 @RestController
 @RequestMapping("/link") // URL: http://localhost:8080/link
@@ -37,7 +38,6 @@ public class LinkController {
 			resposta = new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
 		}
 		return resposta;
-
 	}
 
 	// Request for: http://localhost:8080/link/listar/{id}
@@ -151,6 +151,71 @@ public class LinkController {
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
+		return resposta;
+	}
+
+	// Request for: http://localhost:8080/link/encontrar/{url}
+	@GetMapping(value = "/encontrar/{url}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Object> encontrarLink(@PathVariable(value = "url") String url) {
+		ResponseEntity<Object> resposta = null;
+		List<Link> links = linkService.encontrarLinkUrl(url);
+		if (!links.isEmpty()) {
+			resposta = new ResponseEntity<Object>(links, HttpStatus.OK);
+		} else {
+			resposta = new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
+		}
+		return resposta;
+	}
+
+	// Request for: http://localhost:8080/link/ordemAlfabetica
+	@GetMapping(value = "/ordemAlfabetica", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Object> listarEmOrdemAlfabetica() {
+		ResponseEntity<Object> resposta = null;
+		List<Link> links = linkService.listarEmOrdemAlfabetica();
+		if (!links.isEmpty()) {
+			resposta = new ResponseEntity<Object>(links, HttpStatus.OK);
+		} else {
+			resposta = new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
+		}
+		return resposta;
+	}
+
+	// Request for: http://localhost:8080/link/pagina
+	@GetMapping(value = "/pagina", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity listarPagina() {
+		ResponseEntity<Object> resposta = null;
+		String links = linkService.buscarPagina();
+		if (!links.isEmpty()) {
+			resposta = new ResponseEntity(links, HttpStatus.OK);
+		} else {
+			resposta = new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return resposta;
+	}
+
+	// Request for: http://localhost:8080/link/retornarPagina
+	@GetMapping(value = "/retornarPagina", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Object> retornarPagina() {
+		ResponseEntity<Object> resposta = null;
+		List<ResultadoPagina> resultado = linkService.retornaPaginas();
+		if (!resultado.isEmpty()) {
+			resposta = new ResponseEntity(resultado, HttpStatus.OK);
+		} else {
+			resposta = new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return resposta;
+	}
+
+	// Request for: http://localhost:8080/link/getPagina/{pag}
+	@GetMapping(value = "/getPagina/{pag}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Object> getPagina(@PathVariable(value = "pag") int pag) {
+		ResponseEntity<Object> resposta = null;
+		ResultadoPagina resultado = linkService.getPag(pag);
+		if (resultado != null) {
+			resposta = new ResponseEntity(resultado, HttpStatus.OK);
+		} else {
+			resposta = new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
 		return resposta;
 	}
 }
