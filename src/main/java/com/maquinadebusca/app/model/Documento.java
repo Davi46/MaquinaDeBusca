@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -50,16 +51,28 @@ public class Documento implements Serializable {
 	@JoinColumn(name = "host_id")
 	private Host host; 
 	
-	
-	public Documento() {
-		links = new HashSet();
-	}
+	@NotBlank
+	@Column(nullable=false, length = 200) 
+	private String titulo; 
 
-	public Documento(String url, String texto, String visao) {
+	public Documento(String url, String texto, String visao, String titulo) {
 		this.url = url;
 		this.texto = texto;
 		this.visao = visao;
+		this.titulo = titulo;
 		this.links = new HashSet();
+	}
+	
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public Documento() {
+		links = new HashSet();
 	}
 
 	public String getTexto() {

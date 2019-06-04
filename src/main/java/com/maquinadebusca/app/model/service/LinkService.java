@@ -1,6 +1,7 @@
 package com.maquinadebusca.app.model.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -193,7 +194,7 @@ public class LinkService {
 
 		ResultadoPagina resultadoPag = new ResultadoPagina();
 		pagina = lr.getPage(pageable);
-		if(pagina != null) { 
+		if (pagina != null) {
 			resultadoPag.setTamanhoPag(pagina.getSize());
 			resultadoPag.setNumeroElementos(pagina.getNumberOfElements());
 			resultadoPag.setNumeroPag(pagina.getNumber());
@@ -201,5 +202,17 @@ public class LinkService {
 		}
 
 		return resultadoPag;
+	}
+
+	public List<Link> pesquisarLinkPorIntervaloDeIdentificacao(Long id1, Long id2) {
+		return lr.findLinkByIdRange(id1, id2);
+	}
+
+	public Long contarLinkPorIntervaloDeIdentificacao(Long id1, Long id2) {
+		return lr.countLinkByIdRange(id1, id2);
+	}
+	
+	public List<Link> pesquisarLinkPorIntervaloDeDataUltimaColeta(Date date1, Date date2) {
+		return lr.LinkByDateColetaRange(date1, date2);
 	}
 }

@@ -91,6 +91,7 @@ public class ColetorService {
 				documento.setUrl(urlDocumento);
 				documento.setTexto(d.html());
 				documento.setVisao(retiraStopWords(d.text()));
+				documento.setTitulo(recuperaTitulo(d));
 
 				link.setUltimaColeta(LocalDateTime.now());
 
@@ -127,6 +128,11 @@ public class ColetorService {
 		new Thread();
 		Thread.sleep(1000);
 		return documento;
+	}
+
+	private String recuperaTitulo(Document d) { 
+		Elements urls = d.select("title"); 
+		return urls.tagName("title").get(0).childNodes().get(0).toString(); 
 	}
 
 	private boolean verificaUrlAllow(String u) {

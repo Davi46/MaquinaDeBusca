@@ -1,5 +1,6 @@
 package com.maquinadebusca.app.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -212,6 +213,41 @@ public class LinkController {
 		ResponseEntity<Object> resposta = null;
 		ResultadoPagina resultado = linkService.getPag(pag);
 		if (resultado != null) {
+			resposta = new ResponseEntity(resultado, HttpStatus.OK);
+		} else {
+			resposta = new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return resposta;
+	}
+
+	// Request for: http://localhost:8080/link/intervalo/{id1}/{id2}
+	@GetMapping(value = "/intervalo/{id1}/{id2}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Object> encontrarLinkPorIntervaloDeId(@PathVariable(value = "id1") Long id1,
+			@PathVariable(value = "id2") Long id2) {
+		ResponseEntity<Object> resposta = null;
+		List<Link> resultado = linkService.pesquisarLinkPorIntervaloDeIdentificacao(id1, id2);
+		if (!resultado.isEmpty()) {
+			resposta = new ResponseEntity(resultado, HttpStatus.OK);
+		} else {
+			resposta = new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return resposta;
+	}
+
+	// Request for: http://localhost:8080/link/intervalo/contar/{id1}/{id2}
+	@GetMapping(value = "/intervalo/contar/{id1}/{id2}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity contarLinkPorIntervaloDeId(@PathVariable(value = "id1") Long id1,
+			@PathVariable(value = "id2") Long id2) {
+		return new ResponseEntity(linkService.contarLinkPorIntervaloDeIdentificacao(id1, id2), HttpStatus.OK);
+	}
+
+	// Request for: http://localhost:8080/link/intervalo/{id1}/{id2}
+	@GetMapping(value = "/intervaloData/{date1}/{date2}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Object> encontrarLinkPorIntervaloDeData(@PathVariable(value = "date1") Date date1,
+			@PathVariable(value = "date2") Date date2) {
+		ResponseEntity<Object> resposta = null;
+		List<Link> resultado = linkService.pesquisarLinkPorIntervaloDeDataUltimaColeta(date1, date2);
+		if (!resultado.isEmpty()) {
 			resposta = new ResponseEntity(resultado, HttpStatus.OK);
 		} else {
 			resposta = new ResponseEntity(HttpStatus.NO_CONTENT);

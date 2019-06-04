@@ -52,7 +52,7 @@ public class Link implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "documento_id")
 	private Documento documento; 
-
+	
 	public Link() {
 		this.podeColetar = true;
 	}
