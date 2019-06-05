@@ -1,5 +1,6 @@
 package com.maquinadebusca.app.model.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -211,8 +212,12 @@ public class LinkService {
 	public Long contarLinkPorIntervaloDeIdentificacao(Long id1, Long id2) {
 		return lr.countLinkByIdRange(id1, id2);
 	}
-	
+
 	public List<Link> pesquisarLinkPorIntervaloDeDataUltimaColeta(Date date1, Date date2) {
 		return lr.LinkByDateColetaRange(date1, date2);
+	}
+
+	public int atualizarDataUltimaColeta(String host, LocalDateTime dataUltimaColeta) {
+		return lr.updateLastCrawlingDate(dataUltimaColeta, host);
 	}
 }

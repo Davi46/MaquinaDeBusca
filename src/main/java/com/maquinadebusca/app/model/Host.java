@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set; 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -28,6 +29,7 @@ public class Host implements Serializable {
 	private Long id;
 	
 	@NotBlank
+	@Column(unique=true, nullable=false, length = 200) 
 	private String host;
 	 
 	private int qtdPaginas;

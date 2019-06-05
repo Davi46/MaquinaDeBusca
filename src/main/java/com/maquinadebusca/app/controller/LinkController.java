@@ -1,11 +1,13 @@
 package com.maquinadebusca.app.controller;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -254,4 +256,15 @@ public class LinkController {
 		}
 		return resposta;
 	}
+
+	// Request for: http://localhost:8080/ink/ultima/coleta/{host}/{data}
+	@PutMapping (value = "/ultima/coleta/{host}/{data}", produces =
+	MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity atualizarUltimaColeta (@PathVariable (value = "host") String host, 
+												 @PathVariable (value = "data") @DateTimeFormat (iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime data) {
+		 int n = linkService.atualizarDataUltimaColeta(host, data);	 
+		 ResponseEntity resposta = new ResponseEntity(new Mensagem("sucesso", "número de registros atualizados: " + n, null), HttpStatus.OK);
+		 return resposta;
+	 }
+
 }
