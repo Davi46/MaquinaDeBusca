@@ -3,6 +3,7 @@ package com.maquinadebusca.app.model;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -22,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 
-public class Documento implements Serializable { 
+public class Documento implements Serializable {
 
 	/**
 	 * 
@@ -49,11 +50,19 @@ public class Documento implements Serializable {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "host_id")
-	private Host host; 
-	
-	@NotBlank
-	@Column(nullable=false, length = 200) 
-	private String titulo; 
+	private Host host;
+
+	//@NotBlank
+	//@Column(nullable = false, length = 200)
+	private String titulo;
+
+	private double frequenciaMaxima;
+
+	private double somaQuadradosPesos;
+
+	@OneToMany(mappedBy = "documento", // Nome do atributo na classe IndiceInvertido.
+			cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<IndiceInvertido> indiceInvertido;
 
 	public Documento(String url, String texto, String visao, String titulo) {
 		this.url = url;
@@ -61,8 +70,43 @@ public class Documento implements Serializable {
 		this.visao = visao;
 		this.titulo = titulo;
 		this.links = new HashSet();
-	}
+	} 
 	
+	public double getFrequenciaMaxima() {
+		return frequenciaMaxima;
+	}
+ 
+
+	public void setFrequenciaMaxima(double frequenciaMaxima) {
+		this.frequenciaMaxima = frequenciaMaxima;
+	}
+
+
+
+	public double getSomaQuadradosPesos() {
+		return somaQuadradosPesos;
+	}
+
+
+
+	public void setSomaQuadradosPesos(double somaQuadradosPesos) {
+		this.somaQuadradosPesos = somaQuadradosPesos;
+	}
+
+
+
+	public List<IndiceInvertido> getIndiceInvertido() {
+		return indiceInvertido;
+	}
+
+
+
+	public void setIndiceInvertido(List<IndiceInvertido> indiceInvertido) {
+		this.indiceInvertido = indiceInvertido;
+	}
+
+
+
 	public String getTitulo() {
 		return titulo;
 	}
@@ -124,14 +168,14 @@ public class Documento implements Serializable {
 		link.setDocumento(null);
 		links.remove(link);
 	}
-	
+
 	public Host getHost() {
 		return host;
 	}
 
 	public void setHost(Host host) {
 		this.host = host;
-	} 
+	}
 
 	@Override
 	public int hashCode() {
