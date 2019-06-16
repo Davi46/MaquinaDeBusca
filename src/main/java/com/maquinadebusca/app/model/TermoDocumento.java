@@ -86,10 +86,10 @@ public class TermoDocumento implements Serializable {
 																									// documento.
 		this.indiceInvertido.add(entradaIndiceInvertido); // Insere a nova entrada no índice invertido do termo
 															// corrente.
-		if(documento.getIndiceInvertido() == null) {
+		if (documento.getIndiceInvertido() == null) {
 			documento.setIndiceInvertido(new ArrayList<IndiceInvertido>());
 		}
-		
+
 		documento.getIndiceInvertido().add(entradaIndiceInvertido); // Insere a nova entrada no índice invertido do
 																	// documento que foi informado como parâmetro.
 	}

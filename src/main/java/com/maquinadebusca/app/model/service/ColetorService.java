@@ -126,7 +126,7 @@ public class ColetorService {
 		}
 
 		new Thread();
-		Thread.sleep(1000);
+		Thread.sleep(10000);
 		return documento;
 	}
 

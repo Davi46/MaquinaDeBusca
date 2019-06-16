@@ -58,7 +58,7 @@ public class IndexadorService {
 
 	/**
 	 * Método responsável por retornar um TermoDocumento, caso já exista um termo
-	 * criado com o mesmo texto recebido, o mesmo ~e retornado caso contrario é
+	 * criado com o mesmo texto recebido, o mesmo é retornado caso contrario é
 	 * criado um novo termo com o texto recebido.
 	 * 
 	 * @param texto palavra recebida a ser verificada como termo
