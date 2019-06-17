@@ -5,79 +5,100 @@ import java.util.List;
 
 public class EntradaRanking {
 
-  private String url;
-  private List<Double> produtoPesos = new LinkedList ();
-  private double somaQuadradosPesosDocumento;
-  private double somaQuadradosPesosConsulta;
-  private double similaridade;
+	private String url;
+	private List<Double> produtoPesos = new LinkedList();
+	private double somaQuadradosPesosDocumento;
+	private double somaQuadradosPesosConsulta;
+	private double similaridade;
+	private String titulo;
+	private String descricao;
 
-  public EntradaRanking () {
-  }
+	
 
-  public EntradaRanking (String url, double produtoPesos, double somaQuadradosPesosDocumento, double somaQuadradosPesosConsulta) {
-    this.url = url;
-    this.produtoPesos.add (produtoPesos);
-    this.somaQuadradosPesosDocumento = somaQuadradosPesosDocumento;
-    this.somaQuadradosPesosConsulta = somaQuadradosPesosConsulta;
-  }
+	public EntradaRanking() {
+	}
 
-  public String getUrl () {
-    return url;
-  }
+	public EntradaRanking(String url, double produtoPesos, double somaQuadradosPesosDocumento,
+			double somaQuadradosPesosConsulta) {
+		this.url = url;
+		this.produtoPesos.add(produtoPesos);
+		this.somaQuadradosPesosDocumento = somaQuadradosPesosDocumento;
+		this.somaQuadradosPesosConsulta = somaQuadradosPesosConsulta;
+	}
 
-  public void setUrl (String url) {
-    this.url = url;
-  }
+	public String getUrl() {
+		return url;
+	}
 
-  public List<Double> getProdutoPesos () {
-    return produtoPesos;
-  }
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
-  public void setProdutoPesos (List<Double> produtoPesos) {
-    this.produtoPesos = produtoPesos;
-  }
+	public List<Double> getProdutoPesos() {
+		return produtoPesos;
+	}
 
-  public double getSomaQuadradosPesosDocumento () {
-    return somaQuadradosPesosDocumento;
-  }
+	public void setProdutoPesos(List<Double> produtoPesos) {
+		this.produtoPesos = produtoPesos;
+	}
 
-  public void setSomaQuadradosPesosDocumento (double somaQuadradosPesosDocumento) {
-    this.somaQuadradosPesosDocumento = somaQuadradosPesosDocumento;
-  }
+	public double getSomaQuadradosPesosDocumento() {
+		return somaQuadradosPesosDocumento;
+	}
 
-  public double getSomaQuadradosPesosConsulta () {
-    return somaQuadradosPesosConsulta;
-  }
+	public void setSomaQuadradosPesosDocumento(double somaQuadradosPesosDocumento) {
+		this.somaQuadradosPesosDocumento = somaQuadradosPesosDocumento;
+	}
 
-  public void setSomaQuadradosPesosConsulta (double somaQuadradosPesosConsulta) {
-    this.somaQuadradosPesosConsulta = somaQuadradosPesosConsulta;
-  }
+	public double getSomaQuadradosPesosConsulta() {
+		return somaQuadradosPesosConsulta;
+	}
 
-  public double getSimilaridade () {
-    return similaridade;
-  }
+	public void setSomaQuadradosPesosConsulta(double somaQuadradosPesosConsulta) {
+		this.somaQuadradosPesosConsulta = somaQuadradosPesosConsulta;
+	}
 
-  public void setSimilaridade (double similaridade) {
-    this.similaridade = similaridade;
-  }
+	public double getSimilaridade() {
+		return similaridade;
+	}
 
-  public void adicionarProdutoPesos (double produtoPesos) {
-    this.produtoPesos.add (produtoPesos);
-  }
+	public void setSimilaridade(double similaridade) {
+		this.similaridade = similaridade;
+	}
 
-  public void computarSimilaridade () {
-    int i;
-    double numerador = 0, denominador;
+	public void adicionarProdutoPesos(double produtoPesos) {
+		this.produtoPesos.add(produtoPesos);
+	}
 
-    if ((this.somaQuadradosPesosDocumento > 0) && (this.somaQuadradosPesosConsulta > 0)) {
-      for (i = 0; i < this.produtoPesos.size (); i++) {
-        numerador += this.produtoPesos.get (i);
-      }
-      denominador = Math.sqrt (this.somaQuadradosPesosDocumento) * Math.sqrt (this.somaQuadradosPesosConsulta);
+	public void computarSimilaridade() {
+		int i;
+		double numerador = 0, denominador;
 
-      this.similaridade = numerador / denominador;
-    } else {
-      this.similaridade = 0;
-    }
-  }
+		if ((this.somaQuadradosPesosDocumento > 0) && (this.somaQuadradosPesosConsulta > 0)) {
+			for (i = 0; i < this.produtoPesos.size(); i++) {
+				numerador += this.produtoPesos.get(i);
+			}
+			denominador = Math.sqrt(this.somaQuadradosPesosDocumento) * Math.sqrt(this.somaQuadradosPesosConsulta);
+
+			this.similaridade = numerador / denominador;
+		} else {
+			this.similaridade = 0;
+		}
+	}
+	
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
 }

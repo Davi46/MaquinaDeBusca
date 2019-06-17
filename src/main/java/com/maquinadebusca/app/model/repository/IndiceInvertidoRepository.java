@@ -14,6 +14,6 @@ public interface IndiceInvertidoRepository extends JpaRepository<IndiceInvertido
                               "where t.id = i.termo_id and " +
                               "          i.documento_id = d.id and " +
                               "          t.texto = :termoConsulta ", nativeQuery = true)
-  List<IndiceInvertido> getEntradasIndiceInvertido (@Param ("termoConsulta") String termo);
+  List<IndiceInvertido> getEntradasIndiceInvertido(@Param("termoConsulta") String termo);
 
 }

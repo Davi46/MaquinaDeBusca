@@ -9,14 +9,14 @@ import com.maquinadebusca.app.model.repository.IndiceInvertidoRepository;
 @Service
 public class IndiceInvertidoService {
 
-  @Autowired
-  IndiceInvertidoRepository iir;
+	@Autowired
+	IndiceInvertidoRepository iir;
 
-  public IndiceInvertidoService () {
-  }
+	public IndiceInvertidoService() {
+	}
 
-  public List<IndiceInvertido> getEntradasIndiceInvertido (String termo) {
-    return iir.getEntradasIndiceInvertido (termo);
-  }
+	public List<IndiceInvertido> getEntradasIndiceInvertido(String termo) {
+		return iir.getEntradasIndiceInvertido(termo);
+	}
 
 }

@@ -1,77 +1,77 @@
-package com.maquinadebusca.app.model; 
+package com.maquinadebusca.app.model;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class Consulta {
 
-  private String texto;
-  private String visao;
-  private List<TermoConsulta> termosConsulta = new LinkedList ();
-  private List<EntradaRanking> ranking = new LinkedList ();
-  
-  public Consulta () {
-  }
+	private String texto;
+	private String visao;
+	private List<TermoConsulta> termosConsulta = new LinkedList();
+	private List<EntradaRanking> ranking = new LinkedList();
 
-  public Consulta (String texto) {
-    this.texto = texto;
-    this.visao = texto;
-  }
+	public Consulta() {
+	}
 
-  public String getTexto () {
-    return texto;
-  }
+	public Consulta(String texto) {
+		this.texto = texto;
+		this.visao = texto;
+	}
 
-  public void setTexto (String texto) {
-    this.texto = texto;
-  }
+	public String getTexto() {
+		return texto;
+	}
 
-  public String getVisao () {
-    return visao;
-  }
+	public void setTexto(String texto) {
+		this.texto = texto;
+	}
 
-  public void setVisao (String visao) {
-    this.visao = visao;
-  }
+	public String getVisao() {
+		return visao;
+	}
 
-  public List<TermoConsulta> getTermosConsulta () {
-    return termosConsulta;
-  }
+	public void setVisao(String visao) {
+		this.visao = visao;
+	}
 
-  public void setTermosConsulta (List<TermoConsulta> termosConsulta) {
-    this.termosConsulta = termosConsulta;
-  }
+	public List<TermoConsulta> getTermosConsulta() {
+		return termosConsulta;
+	}
 
-  public void adicionarTermoConsulta (TermoConsulta termoConsulta) {
-    this.termosConsulta.add (termoConsulta);
-  }
+	public void setTermosConsulta(List<TermoConsulta> termosConsulta) {
+		this.termosConsulta = termosConsulta;
+	}
 
-  public List<String> getListaTermos () {
-    List<String> listaTermos = new LinkedList ();
+	public void adicionarTermoConsulta(TermoConsulta termoConsulta) {
+		this.termosConsulta.add(termoConsulta);
+	}
 
-    String[] termos = this.texto.split (" ");
-    for (String termo : termos) {
-      listaTermos.add (termo);
-    }
+	public List<String> getListaTermos() {
+		List<String> listaTermos = new LinkedList();
 
-    return listaTermos;
-  }
+		String[] termos = this.texto.split(" ");
+		for (String termo : termos) {
+			listaTermos.add(termo);
+		}
 
-  public double getSomaQuadradosPesos () {
-    double somaQuadradosPesos = 0;
-    List<TermoConsulta> termosConsulta = this.getTermosConsulta ();
-    for (TermoConsulta termoConsulta : termosConsulta) {
-      somaQuadradosPesos += Math.pow (termoConsulta.getPeso (), 2);
-    }
-    return somaQuadradosPesos;
-  }
+		return listaTermos;
+	}
 
-  public List<EntradaRanking> getRanking () {
-    return ranking;
-  }
+	public double getSomaQuadradosPesos() {
+		double somaQuadradosPesos = 0;
+		List<TermoConsulta> termosConsulta = this.getTermosConsulta();
+		for (TermoConsulta termoConsulta : termosConsulta) {
+			somaQuadradosPesos += Math.pow(termoConsulta.getPeso(), 2);
+		}
+		return somaQuadradosPesos;
+	}
 
-  public void setRanking (List<EntradaRanking> ranking) {
-    this.ranking = ranking;
-  }
-  
+	public List<EntradaRanking> getRanking() {
+		return ranking;
+	}
+
+	public void setRanking(List<EntradaRanking> ranking) {
+		this.ranking = ranking;
+	}
+
 }

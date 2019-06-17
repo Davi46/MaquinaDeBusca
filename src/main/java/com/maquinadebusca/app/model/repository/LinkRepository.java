@@ -25,6 +25,11 @@ public interface LinkRepository extends JpaRepository<Link, Long> {
 
 	@Override
 	Link save(Link link);
+	 
+	@Transactional
+	@Modifying
+	@Query(value = "DELETE FROM link WHERE id = :id", nativeQuery = true)
+	void remover(@Param("id") Long id1);
 
 	List<Link> findByUrlIgnoreCaseContaining(String url);
 

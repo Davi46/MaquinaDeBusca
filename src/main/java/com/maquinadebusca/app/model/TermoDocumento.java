@@ -24,7 +24,7 @@ public class TermoDocumento implements Serializable {
 	static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 
 	@NotBlank
@@ -72,8 +72,8 @@ public class TermoDocumento implements Serializable {
 		this.indiceInvertido = indiceInvertido;
 	}
 
-	public void inserirEntradaIndiceInvertido(Documento documento, int frequencia) {
-		IndiceInvertido entradaIndiceInvertido = new IndiceInvertido(this, documento, frequencia); // Cria uma nova
+	public void inserirEntradaIndiceInvertido(Documento documento, int frequencia, double peso) {
+		IndiceInvertido entradaIndiceInvertido = new IndiceInvertido(this, documento, frequencia, peso); // Cria uma nova
 																									// entrada para o
 																									// índice invertido
 																									// com o termo
@@ -142,8 +142,7 @@ public class TermoDocumento implements Serializable {
 		Iterator<IndiceInvertido> iterator = this.indiceInvertido.iterator();
 		while (iterator.hasNext()) {
 			IndiceInvertido entradaIndiceInvertido = iterator.next();
-			if (entradaIndiceInvertido.getTermo().equals(this)
-					&& entradaIndiceInvertido.getDocumento().equals(documento)) {
+			if (entradaIndiceInvertido.getTermo().equals(this) && entradaIndiceInvertido.getDocumento().equals(documento)) {
 				entradaIndiceInvertido.setPeso(peso);
 				break;
 			}

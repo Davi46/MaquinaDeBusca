@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 
@@ -31,7 +32,7 @@ public class Documento implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 
 	@NotBlank
@@ -52,8 +53,8 @@ public class Documento implements Serializable {
 	@JoinColumn(name = "host_id")
 	private Host host;
 
-	//@NotBlank
-	//@Column(nullable = false, length = 200)
+	@NotBlank
+	@Column(nullable = false, length = 200)   
 	private String titulo;
 
 	private double frequenciaMaxima;
@@ -175,6 +176,10 @@ public class Documento implements Serializable {
 
 	public void setHost(Host host) {
 		this.host = host;
+	}
+	
+	public void calculaQuadradosPeso(double peso) {
+		somaQuadradosPesos += Math.sqrt(peso);
 	}
 
 	@Override

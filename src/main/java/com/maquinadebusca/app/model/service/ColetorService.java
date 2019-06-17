@@ -10,6 +10,8 @@ import com.maquinadebusca.app.model.Link;
 import com.maquinadebusca.app.model.repository.DocumentoRepository;
 import com.maquinadebusca.app.model.repository.LinkRepository;
 
+import Util.StopWords;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -50,6 +52,9 @@ public class ColetorService {
 	@Autowired
 	private HostService hostService;
 
+	@Autowired
+	private IndexadorService indexadorService;
+
 	public ColetorService() {
 		urlsSementes = new ArrayList<Link>();
 		links = new ArrayList<Link>();
@@ -60,7 +65,7 @@ public class ColetorService {
 			boolean existeLink = false;
 			do {
 				Link link = linkService.getProxUrlColetar();
-				if (link != null && docService.getDocumentos().size() <= 10) {
+				if (link != null && docService.getDocumentos().size() <= 5) {
 					this.coletar(link);
 					existeLink = true;
 				} else {
@@ -79,6 +84,7 @@ public class ColetorService {
 	public Documento coletar(Link link) throws InterruptedException {
 		String urlDocumento = link.getUrl();
 		Documento documento = new Documento();
+		StopWords sw = new StopWords();
 
 		try {
 			link = linkService.verificaUltimaColetaURL(urlDocumento);
@@ -90,38 +96,46 @@ public class ColetorService {
 
 				documento.setUrl(urlDocumento);
 				documento.setTexto(d.html());
-				documento.setVisao(retiraStopWords(d.text()));
-				documento.setTitulo(recuperaTitulo(d));
+				documento.setVisao(sw.retiraStopWords(d.text()));
+				String titulo = recuperaTitulo(d);
+				if (titulo != null) { 
+					documento.setTitulo(titulo);
+					documento.setFrequenciaMaxima(0L);
+					documento.setSomaQuadradosPesos(0L);
 
-				link.setUltimaColeta(LocalDateTime.now());
+					link.setUltimaColeta(LocalDateTime.now());
 
-				int i = 0;
-				for (Element url : urls) {
-					i++;
-					String u = url.attr("abs:href");
-					Link linkEncontrado = null;
-					if ((!u.equals("")) && (u != null) && verificaUrlAllow(u)) {
-						if (!linkService.verificaLinkExistente(u) && !u.equals(urlDocumento)) {
-							linkEncontrado = new Link();
-							linkEncontrado.setUrl(u);
-							linkEncontrado.setUltimaColeta(null);
-							links.add(linkEncontrado);
-							documento.addLink(linkEncontrado);
+					int i = 0;
+					for (Element url : urls) {
+						i++;
+						String u = url.attr("abs:href");
+						Link linkEncontrado = null;
+						if ((!u.equals("")) && (u != null) && verificaUrlAllow(u)) {
+							if (!linkService.verificaLinkExistente(u) && !u.equals(urlDocumento)) {
+								linkEncontrado = new Link();
+								linkEncontrado.setUrl(u);
+								linkEncontrado.setUltimaColeta(null);
+								links.add(linkEncontrado);
+								documento.addLink(linkEncontrado);
+							}
 						}
 					}
+					System.out.println("Número de links coletados: " + i);
+
+					URL urlH = new URL(urlDocumento);
+					hostService.addLink(documento, urlH.getHost());
+ 
+					if (link.getDocumento() == null) {
+						link.setDocumento(documento);
+						linkService.salvarLink(link);
+					} 
 				}
-				System.out.println("Número de links coletados: " + i);
-
-				URL urlH = new URL(urlDocumento);
-				hostService.addLink(documento, urlH.getHost());
-
-				if (link.getDocumento() == null) {
-					link.setDocumento(documento);
-					linkService.salvarLink(link);
+				else { 
+					linkService.remove(link);
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("\n\n\n Erro ao coletar a página! \n\n\n");
+			System.out.println("\n\n\n Erro ao coletar a página! \n\n\n"); 
 			e.printStackTrace();
 		}
 
@@ -130,9 +144,13 @@ public class ColetorService {
 		return documento;
 	}
 
-	private String recuperaTitulo(Document d) { 
-		Elements urls = d.select("title"); 
-		return urls.tagName("title").get(0).childNodes().get(0).toString(); 
+	private String recuperaTitulo(Document d) {
+		Elements title = d.select("title");
+		if (!title.isEmpty()) {
+			return title.tagName("title").get(0).childNodes().get(0).toString();
+		}
+
+		return null;
 	}
 
 	private boolean verificaUrlAllow(String u) {
@@ -168,30 +186,6 @@ public class ColetorService {
 		}
 
 		return urlsDisallow;
-	}
-
-	public List<String> lerStopWords() {
-		String palavra;
-		List<String> stopWords = new LinkedList<String>();
-		try {
-			FileReader fr = new FileReader("stopwords/stopwords.txt");
-			BufferedReader br = new BufferedReader(fr);
-			while ((palavra = br.readLine()) != null) {
-				stopWords.add(palavra.toLowerCase().trim());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return stopWords;
-	}
-
-	private String retiraStopWords(String text) {
-		List<String> stopWords = lerStopWords();
-		for (String stopWord : stopWords) {
-			text.replace(stopWord, "");
-		}
-		return text;
 	}
 
 }

@@ -47,5 +47,9 @@ public class DocumentoService{
 		}
 		
 		return docs;
-	}  
+	}
+	
+	public long recuperaNumeroDeDocumentosPorTermo(String termo) {
+		return dr.recuperaNumeroDeDocumentosPorTermo(termo);
+	}
 }

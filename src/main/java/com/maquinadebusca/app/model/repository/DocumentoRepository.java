@@ -14,5 +14,8 @@ public interface DocumentoRepository extends JpaRepository<Documento, Long> {
 	Documento findById(long id);
 	
 	@Query(value = "SELECT titulo, url, visao FROM documento WHERE visao like %:pesquisa%", nativeQuery = true)
-	List<Object[]> getDocByText(@Param("pesquisa") String pesquisa); 
+	List<Object[]> getDocByText(@Param("pesquisa") String pesquisa);
+
+	@Query(value = "SELECT count(*) FROM documento WHERE visao like %:termo%", nativeQuery = true)
+	long recuperaNumeroDeDocumentosPorTermo(@Param("termo") String termo); 
 }

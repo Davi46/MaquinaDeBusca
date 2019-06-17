@@ -220,4 +220,9 @@ public class LinkService {
 	public int atualizarDataUltimaColeta(String host, LocalDateTime dataUltimaColeta) {
 		return lr.updateLastCrawlingDate(dataUltimaColeta, host);
 	}
+	
+	public void remove(Link link) {
+		lr.remover(link.getId()); 
+		//lr.deleteById(link.getId());
+	}
 }

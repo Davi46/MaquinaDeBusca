@@ -17,7 +17,7 @@ public class IndexadorService {
 	private Hashtable hashTermos;
 
 	@Autowired
-	DocumentoRepository dr;
+	DocumentoService ds;
 
 	@Autowired
 	TermoRepository tr;
@@ -26,33 +26,63 @@ public class IndexadorService {
 		this.hashTermos = new Hashtable();
 	}
 
-	@Transactional
+	
 	public boolean criarIndice() {
-		List<Documento> documentos = this.getDocumentos();
+		List<Documento> documentos = ds.getDocumentos();
 		for (Documento documento : documentos) {
 			documento.setFrequenciaMaxima(0L);
-			documento.setSomaQuadradosPesos(0L);  
-			documento = dr.save(documento);
-			this.indexar(documento);
+			documento.setSomaQuadradosPesos(0L);
+			documento = ds.addDocumento(documento);
+			this.indexar(documento, documentos.size());
 		}
 
 		return true;
 	}
 
-	public void indexar(Documento documento) {
+	public void indexar(Documento documento, int totalDocumentos) {
 		int i;
 
 		String visaoDocumento = documento.getVisao();
 		String[] termos = visaoDocumento.split(" ");// Cria um vetor por palavras da visao do documento
 		for (String termo : termos) {
 			if (!termo.equals("")) { // Termo diferente que vazio
-				TermoDocumento termoDocumento = this.getTermo(termo);
+				TermoDocumento termoDocumento = this.getTermo(termo, documento);
 				int f = this.frequencia(termoDocumento.getTexto(), termos);
 				if (f > documento.getFrequenciaMaxima()) {
 					documento.setFrequenciaMaxima(f);
 				}
-				termoDocumento.inserirEntradaIndiceInvertido(documento, f);
+				double peso = recuperaPeso(totalDocumentos, termoDocumento.getN(), f); 
+				documento.calculaQuadradosPeso(peso); 
+
+				termoDocumento.inserirEntradaIndiceInvertido(documento, f, peso);
 			}
+		}
+	}
+
+	private double recuperaPeso(int totalDocumentos, Long n, int frequencia) {
+		double tf = recuperaTf(frequencia);
+		double idf = recuperaIdf(totalDocumentos, n);
+		return tf * idf;
+	}
+
+	private double recuperaIdf(int totalDocumentos, Long n) {
+		try {
+			if (totalDocumentos == 0 || n == 0L) {
+				return 0;
+			}
+
+			return Math.log((totalDocumentos / n));
+			
+		} catch (Exception e) {
+			return 0;
+		} 
+	}
+
+	private double recuperaTf(int frequencia) {
+		try {
+			return 1 + Math.log(frequencia);
+		} catch (Exception e) {
+			return 0;
 		}
 	}
 
@@ -64,7 +94,7 @@ public class IndexadorService {
 	 * @param texto palavra recebida a ser verificada como termo
 	 * @return termo retorna um objeto do tipo TermoDocumento
 	 */
-	public TermoDocumento getTermo(String texto) {
+	public TermoDocumento getTermo(String texto, Documento doc) {
 		TermoDocumento termo;
 
 		if (this.hashTermos.containsKey(texto)) {
@@ -72,7 +102,7 @@ public class IndexadorService {
 		} else {
 			termo = new TermoDocumento();
 			termo.setTexto(texto);
-			termo.setN(0L);
+			termo.setN(ds.recuperaNumeroDeDocumentosPorTermo(texto));
 			termo = tr.save(termo);
 			this.hashTermos.put(texto, termo);
 		}
@@ -81,7 +111,7 @@ public class IndexadorService {
 	}
 
 	/**
-	 * Método responsável por calcular a frequuência de um termo dentro de um vetor
+	 * Método responsável por calcular a frequência de um termo dentro de um vetor
 	 * de termos.
 	 * 
 	 * @param termo  a ser verificado no vetor
@@ -89,7 +119,7 @@ public class IndexadorService {
 	 * @return frequencia que o termo é encontrado dentro de Termos
 	 */
 	public int frequencia(String termo, String[] termos) {
-		int i, contador = 0; 
+		int i, contador = 0;
 		for (i = 0; i < termos.length; i++) {
 			if (!termos[i].equals("")) {
 				if (termos[i].equalsIgnoreCase(termo)) {
@@ -100,36 +130,6 @@ public class IndexadorService {
 		}
 
 		return contador;
-	}
- 
-	public List<Documento> getDocumentos() {
-		Documento documento;
-		List<Documento> documentos = new LinkedList();
-
-		documento = new Documento();
-		documento.setUrl("www.1.com.br");
-		documento.setTexto("to do is to be to be is to do");
-		documento.setVisao("to do is to be to be is to do");
-		documentos.add(documento);
-
-		documento = new Documento();
-		documento.setUrl("www.2.com.br");
-		documento.setTexto("to be or not to be i am what i am");
-		documento.setVisao("to be or not to be i am what i am");
-		documentos.add(documento);
-
-		documento = new Documento();
-		documento.setUrl("www.3.com.br");
-		documento.setTexto("i think therefore i am do be do be do");
-		documento.setVisao("i think therefore i am do be do be do");
-		documentos.add(documento);
-		documento = new Documento();
-		documento.setUrl("www.4.com.br");
-		documento.setTexto("do do do da da da let it be let it be");
-		documento.setVisao("do do do da da da let it be let it be");
-		documentos.add(documento);
-
-		return documentos;
 	}
 
 }
