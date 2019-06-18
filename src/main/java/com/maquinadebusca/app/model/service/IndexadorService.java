@@ -22,7 +22,7 @@ public class IndexadorService {
 	@Autowired
 	TermoRepository tr;
 
-	public IndexadorService() {
+	public IndexadorService() { 
 		this.hashTermos = new Hashtable();
 	}
 
@@ -43,7 +43,8 @@ public class IndexadorService {
 		int i;
 
 		String visaoDocumento = documento.getVisao();
-		String[] termos = visaoDocumento.split(" ");// Cria um vetor por palavras da visao do documento
+		// Cria um vetor por palavras da visao do documento
+		String[] termos = visaoDocumento.split(" ");
 		for (String termo : termos) {
 			if (!termo.equals("")) { // Termo diferente que vazio
 				TermoDocumento termoDocumento = this.getTermo(termo, documento);

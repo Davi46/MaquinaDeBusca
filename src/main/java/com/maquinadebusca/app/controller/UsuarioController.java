@@ -25,7 +25,7 @@ public class UsuarioController {
 	@Autowired
 	UsuarioService usuarioService;
 
-	private static final String HEADER_STRING = "Authorization"; 
+	private static final String HEADER_STRING = "Authorization";
 
 	// Request for: http://localhost:8080/user/add
 	@PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -73,6 +73,21 @@ public class UsuarioController {
 		}
 		return resposta;
 
+	}
+
+	// URL: http://localhost:8080/user/getUser
+	@GetMapping(value = "/getUser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity getUser(HttpServletRequest request) {
+		ResponseEntity resposta = null;
+		String token = request.getHeader(HEADER_STRING);
+		Usuario usuario = usuarioService.getUsuarioByUser(Util.getUser(token));
+		 
+		if (usuario != null) {
+			resposta = new ResponseEntity<Object>(usuario, HttpStatus.OK);
+		} else {
+			resposta = new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
+		}
+		return resposta; 
 	}
 
 }

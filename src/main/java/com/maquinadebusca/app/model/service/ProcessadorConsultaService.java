@@ -78,8 +78,7 @@ public class ProcessadorConsultaService {
 			List<IndiceInvertido> entradasIndiceInvertido = iis.getEntradasIndiceInvertido(termoConsulta.getTexto());
 			for (IndiceInvertido entradaIndiceInvertido : entradasIndiceInvertido) {
 				if (this.mergeListasInvertidas.containsKey(entradaIndiceInvertido.getDocumento().getUrl())) {
-					EntradaRanking entradaRanking = this.mergeListasInvertidas
-							.get(entradaIndiceInvertido.getDocumento().getUrl());
+					EntradaRanking entradaRanking = this.mergeListasInvertidas.get(entradaIndiceInvertido.getDocumento().getUrl());
 					entradaRanking.adicionarProdutoPesos(termoConsulta.getPeso() * entradaIndiceInvertido.getPeso());
 				} else {
 					EntradaRanking entradaRanking = new EntradaRanking();
@@ -91,8 +90,7 @@ public class ProcessadorConsultaService {
 					}
 					entradaRanking.setDescricao(entradaIndiceInvertido.getDocumento().getVisao().substring(0, max));  
 					entradaRanking.adicionarProdutoPesos(termoConsulta.getPeso() * entradaIndiceInvertido.getPeso());
-					entradaRanking.setSomaQuadradosPesosDocumento(
-							entradaIndiceInvertido.getDocumento().getSomaQuadradosPesos());
+					entradaRanking.setSomaQuadradosPesosDocumento(entradaIndiceInvertido.getDocumento().getSomaQuadradosPesos());
 					entradaRanking.setSomaQuadradosPesosConsulta(consulta.getSomaQuadradosPesos());
 					this.mergeListasInvertidas.put(entradaIndiceInvertido.getDocumento().getUrl(), entradaRanking);
 				}
