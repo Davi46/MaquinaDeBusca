@@ -47,7 +47,7 @@ public class ProcessadorConsultaService {
 		consulta.setRanking(this.getRanking());
 		return consulta;
 	}
-	
+
 	public List<EntradaRanking> processarConsultaAplicacao(String textoConsulta) {
 		StopWords sw = new StopWords();
 		Consulta consulta = new Consulta(sw.retiraStopWords(textoConsulta));
@@ -56,7 +56,6 @@ public class ProcessadorConsultaService {
 		this.computarSimilaridade();
 		return this.getRanking();
 	}
-	
 
 	public void iniciarTermosConsulta(Consulta consulta) {
 		String visaoConsulta = consulta.getVisao();
@@ -78,19 +77,17 @@ public class ProcessadorConsultaService {
 			List<IndiceInvertido> entradasIndiceInvertido = iis.getEntradasIndiceInvertido(termoConsulta.getTexto());
 			for (IndiceInvertido entradaIndiceInvertido : entradasIndiceInvertido) {
 				if (this.mergeListasInvertidas.containsKey(entradaIndiceInvertido.getDocumento().getUrl())) {
-					EntradaRanking entradaRanking = this.mergeListasInvertidas.get(entradaIndiceInvertido.getDocumento().getUrl());
+					EntradaRanking entradaRanking = this.mergeListasInvertidas
+							.get(entradaIndiceInvertido.getDocumento().getUrl());
 					entradaRanking.adicionarProdutoPesos(termoConsulta.getPeso() * entradaIndiceInvertido.getPeso());
 				} else {
 					EntradaRanking entradaRanking = new EntradaRanking();
 					entradaRanking.setUrl(entradaIndiceInvertido.getDocumento().getUrl());
 					entradaRanking.setTitulo(entradaIndiceInvertido.getDocumento().getTitulo()); 
-					int max = 240;
-					if(entradaIndiceInvertido.getDocumento().getVisao().length() < 240);{
-						max = entradaIndiceInvertido.getDocumento().getVisao().length();
-					}
-					entradaRanking.setDescricao(entradaIndiceInvertido.getDocumento().getVisao().substring(0, max));  
+					entradaRanking.setDescricao(entradaIndiceInvertido.getDocumento().getDescricao());
 					entradaRanking.adicionarProdutoPesos(termoConsulta.getPeso() * entradaIndiceInvertido.getPeso());
-					entradaRanking.setSomaQuadradosPesosDocumento(entradaIndiceInvertido.getDocumento().getSomaQuadradosPesos());
+					entradaRanking.setSomaQuadradosPesosDocumento(
+							entradaIndiceInvertido.getDocumento().getSomaQuadradosPesos());
 					entradaRanking.setSomaQuadradosPesosConsulta(consulta.getSomaQuadradosPesos());
 					this.mergeListasInvertidas.put(entradaIndiceInvertido.getDocumento().getUrl(), entradaRanking);
 				}
@@ -113,7 +110,7 @@ public class ProcessadorConsultaService {
 			resp.add(entradaRanking);
 		}
 
-		return ordenaRanking(resp); 
+		return ordenaRanking(resp);
 	}
 
 	private List<EntradaRanking> ordenaRanking(List<EntradaRanking> ranking) {
@@ -132,5 +129,5 @@ public class ProcessadorConsultaService {
 		}
 
 		return resp;
-	} 
+	}
 }

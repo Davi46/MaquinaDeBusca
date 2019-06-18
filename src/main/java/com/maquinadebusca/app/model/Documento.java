@@ -47,6 +47,14 @@ public class Documento implements Serializable {
 	@NotBlank
 	private String visao;
 
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
 	@OneToMany(mappedBy = "documento", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	private Set<Link> links;
 
@@ -57,9 +65,13 @@ public class Documento implements Serializable {
 	@NotBlank
 	@Column(nullable = false, length = 200)   
 	private String titulo;
+	
+	@NotBlank
+	@Column(nullable = false, length = 250)  
+	private String descricao;
 
 	private double frequenciaMaxima;
-
+		
 	private double somaQuadradosPesos;
 
 	@OneToMany(mappedBy = "documento", // Nome do atributo na classe IndiceInvertido.

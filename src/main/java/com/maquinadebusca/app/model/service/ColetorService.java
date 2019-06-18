@@ -96,6 +96,12 @@ public class ColetorService {
 
 				documento.setUrl(urlDocumento);
 				documento.setTexto(d.html());
+				documento.setDescricao(d.text());
+				int max = 240;
+				if (d.text().length() < 240) {
+					max = d.text().length();
+				}
+				documento.setDescricao(d.text().substring(0, max));
 				documento.setVisao(sw.retiraStopWords(d.text()));
 				String titulo = recuperaTitulo(d);
 				if (titulo != null) { 
