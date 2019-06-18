@@ -37,8 +37,8 @@ public class JWTAuthenticationFilter extends GenericFilterBean {
 			throws IOException, ServletException {
 		HttpServletRequest re = (HttpServletRequest) request;
 		String token = re.getHeader(HEADER_STRING);
-		String user = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token.replace(TOKEN_PREFIX, "")).getBody()
-				.getSubject();
+		//String user = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token.replace(TOKEN_PREFIX, "")).getBody()
+				//.getSubject();
 		Authentication authentication = TokenAuthenticationService.getAuthentication((HttpServletRequest) request);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		request.setAttribute("Non-Authoritative Information", "Usuário não tem permissão para acessar o método!");
