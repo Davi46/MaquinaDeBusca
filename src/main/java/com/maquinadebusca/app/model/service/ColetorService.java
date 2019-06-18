@@ -65,7 +65,7 @@ public class ColetorService {
 			boolean existeLink = false;
 			do {
 				Link link = linkService.getProxUrlColetar();
-				if (link != null && docService.getDocumentos().size() < 5) {
+				if (link != null && docService.getDocumentos().size() < 6) {
 					this.coletar(link);
 					existeLink = true;
 				} else {
