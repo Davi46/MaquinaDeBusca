@@ -20,10 +20,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Documento implements Serializable {
 
 	/**

@@ -6,6 +6,7 @@
 package com.maquinadebusca.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -31,6 +32,7 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id") 
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Link implements Serializable {
 
 	static final long serialVersionUID = 1L;

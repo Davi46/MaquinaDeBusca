@@ -19,4 +19,7 @@ public class IndiceInvertidoService {
 		return iir.getEntradasIndiceInvertido(termo);
 	}
 
+	public void removeAll() {
+		iir.removeAll();
+	}
 }

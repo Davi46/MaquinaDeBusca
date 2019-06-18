@@ -37,5 +37,9 @@ public class TermoDocumentoService {
 			termoDocumento.setN(ds.recuperaNumeroDeDocumentosPorTermo(termoDocumento.getTexto()));
 		}
 	}
+	
+	public void removeAll() {
+		tdr.removerAll();
+	}
 
 }

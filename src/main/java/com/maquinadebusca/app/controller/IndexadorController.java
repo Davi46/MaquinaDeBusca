@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/indexador") // URL: http://localhost:8080/indexador
-public class Indexador {
+public class IndexadorController {
 
 	@Autowired
 	IndexadorService is;

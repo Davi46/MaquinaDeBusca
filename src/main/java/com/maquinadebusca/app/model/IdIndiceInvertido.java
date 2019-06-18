@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Embeddable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Embeddable
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class IdIndiceInvertido implements Serializable {
  	
 	private Long idTermo;

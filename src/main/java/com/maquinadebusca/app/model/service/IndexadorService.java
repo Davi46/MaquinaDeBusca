@@ -21,25 +21,37 @@ public class IndexadorService {
 
 	@Autowired
 	TermoRepository tr;
-
+	
+	@Autowired
+	TermoDocumentoService tds;
+	
+	@Autowired
+	IndiceInvertidoService iis;
+	
+	
 	public IndexadorService() { 
 		this.hashTermos = new Hashtable();
 	}
 
 	
 	public boolean criarIndice() {
+		this.hashTermos = new Hashtable();
+		//Apagar registros de indice invertido e termo documento
+		iis.removeAll();
+		tds.removeAll();
+		
 		List<Documento> documentos = ds.getDocumentos();
 		for (Documento documento : documentos) {
 			documento.setFrequenciaMaxima(0L);
 			documento.setSomaQuadradosPesos(0L);
 			documento = ds.addDocumento(documento);
-			this.indexar(documento, documentos.size());
+			this.indexar(documento, Long.valueOf(documentos.size()));
 		}
 
 		return true;
 	}
 
-	public void indexar(Documento documento, int totalDocumentos) {
+	public void indexar(Documento documento, Long totalDocumentos) {
 		int i;
 
 		String visaoDocumento = documento.getVisao();
@@ -47,7 +59,7 @@ public class IndexadorService {
 		String[] termos = visaoDocumento.split(" ");
 		for (String termo : termos) {
 			if (!termo.equals("")) { // Termo diferente que vazio
-				TermoDocumento termoDocumento = this.getTermo(termo, documento);
+				TermoDocumento termoDocumento = this.getTermo(termo.trim(), documento);
 				int f = this.frequencia(termoDocumento.getTexto(), termos);
 				if (f > documento.getFrequenciaMaxima()) {
 					documento.setFrequenciaMaxima(f);
@@ -60,19 +72,19 @@ public class IndexadorService {
 		}
 	}
 
-	private double recuperaPeso(int totalDocumentos, Long n, int frequencia) {
+	private double recuperaPeso(Long totalDocumentos, Long n, int frequencia) {
 		double tf = recuperaTf(frequencia);
-		double idf = recuperaIdf(totalDocumentos, n);
+		double idf = recuperaIdf(totalDocumentos, n); 
 		return tf * idf;
 	}
 
-	private double recuperaIdf(int totalDocumentos, Long n) {
+	private double recuperaIdf(Long totalDocumentos, Long n) {
 		try {
 			if (totalDocumentos == 0 || n == 0L) {
 				return 0;
 			}
 
-			return Math.log((totalDocumentos / n));
+			return Math.log((totalDocumentos.doubleValue() / n.doubleValue()));
 			
 		} catch (Exception e) {
 			return 0;

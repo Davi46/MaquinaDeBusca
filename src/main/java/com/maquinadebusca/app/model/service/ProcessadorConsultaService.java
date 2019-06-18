@@ -63,9 +63,9 @@ public class ProcessadorConsultaService {
 		String[] termos = visaoConsulta.split(" ");
 		for (String termo : termos) {
 			if (!termo.equals("")) {
-				int f = is.frequencia(termo, termos);
-				double idf = ts.getIdf(termo);
-				TermoConsulta termoConsulta = new TermoConsulta(termo, f, idf);
+				int f = is.frequencia(termo.trim(), termos);
+				double idf = ts.getIdf(termo.trim());
+				TermoConsulta termoConsulta = new TermoConsulta(termo.trim(), f, idf);
 				consulta.adicionarTermoConsulta(termoConsulta);
 			}
 		}
