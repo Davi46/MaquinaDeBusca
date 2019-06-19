@@ -31,14 +31,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			//.antMatchers("/").permitAll() 
 			.antMatchers(HttpMethod.GET).permitAll()
 			.antMatchers(HttpMethod.POST).permitAll()
+			.antMatchers(HttpMethod.PUT).permitAll()
 			.antMatchers(HttpMethod.OPTIONS).permitAll()
-			.antMatchers(HttpMethod.POST, "/login").permitAll()
+			//.antMatchers(HttpMethod.POST, "/login").permitAll()
 			//.antMatchers(HttpMethod.POST, "/user").permitAll() 
 			.anyRequest().authenticated()
-			.and()
+			.and();
 			
 			// filtra requisições de login
-			.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class);
+			//.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class);
 			//.addFilterBefore(new JWTLoginFilter("/user", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
 			
 			// filtra outras requisições para verificar a presença do JWT no header

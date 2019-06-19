@@ -32,43 +32,55 @@ public class StopWords {
 	public String retiraStopWords(String text) {
 		List<String> visaoList = Arrays.asList(text.split(" "));
 		List<String> novoVisao = new ArrayList<>();
+		char[] pontuacao = pontuacao();
 
 		for (String word : visaoList) {
 			if (!verificaStopWord(word)) {
-				novoVisao.add(word.trim());
+				List<String> wo = new ArrayList<>();
+				char[] letras = word.toCharArray();
+				for (char l : letras) { 
+					if (!verificaPontuacao(l)) {
+						wo.add(String.valueOf(l));
+					} 
+				}
+
+				StringBuilder nw = new StringBuilder();
+				for (String w : wo) {
+					nw.append(w + "");
+				}
+
+				novoVisao.add(nw.toString());
 			}
 		}
 
 		// Forma nova visao
 		StringBuilder nv = new StringBuilder();
 		for (String w : novoVisao) {
-			nv.append(w + " ");
-		}
-		
-		//Retira pontuacao
-		for (char pontuacao : pontuacao()) {
-			nv.toString().toLowerCase().replace(pontuacao, '\u0000');
+			if(w != "") {
+				nv.append(w + " ");
+			} 
 		}
 
 		return nv.toString().trim();
 	}
 
 	private char[] pontuacao() {
-		String pontuacao; 
-		char[] stopWordfs = null ;
-		
- 		try {
+		String pontuacao;
+		char[] stopWordfs = null;
+
+		try {
 			FileReader fr = new FileReader("stopwords/pontuacaoStop.txt");
 			BufferedReader br = new BufferedReader(fr);
-			stopWordfs = new char[br.readLine().length()];
-			
+			stopWordfs = new char[29];
+
 			int i = 0;
-			
+
 			while ((pontuacao = br.readLine()) != null) {
-				stopWordfs[i] = pontuacao.toLowerCase().trim().toString().charAt(0);
+				char p = pontuacao.toLowerCase().trim().toString().charAt(0);
+				stopWordfs[i] = p;
 				i++;
-			} 
-			
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -84,5 +96,16 @@ public class StopWords {
 			}
 		}
 		return false;
-	} 
+	}
+
+	private boolean verificaPontuacao(char letra) {
+		char[] pontuacao = pontuacao();
+		for (char ponto : pontuacao) {
+			if (ponto == letra) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

@@ -18,17 +18,17 @@ import com.maquinadebusca.app.model.repository.UsuarioRepository;
 @Service
 public class UsuarioService implements UserDetailsService {
 
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	//private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Autowired
 	private UsuarioRepository ur;
 
 	public UsuarioService() {
-		bCryptPasswordEncoder = new BCryptPasswordEncoder(); 
+		//bCryptPasswordEncoder = new BCryptPasswordEncoder(); 
 	}
 
 	public Usuario saveUsuario(Usuario usuario) {
-		usuario.setSenha(bCryptPasswordEncoder.encode(usuario.getSenha()));
+		//usuario.setSenha(bCryptPasswordEncoder.encode(usuario.getSenha()));
 		return ur.save(usuario);
 	}
 

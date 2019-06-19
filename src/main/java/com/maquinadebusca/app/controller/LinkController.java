@@ -258,7 +258,7 @@ public class LinkController {
 	}
 
 	// Request for: http://localhost:8080/ink/ultima/coleta/{host}/{data}
-	@PutMapping (value = "/ultima/coleta/{host}/{data}", produces =
+	@PostMapping (value = "/ultima/coleta/{host}/{data}", produces =
 	MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity atualizarUltimaColeta (@PathVariable (value = "host") String host, 
 												 @PathVariable (value = "data") @DateTimeFormat (iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime data) {
