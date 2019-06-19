@@ -39,6 +39,7 @@ public class ProcessadorConsultaService {
 	}
 
 	public Consulta processarConsulta(String textoConsulta) {
+		this.mergeListasInvertidas = new Hashtable();
 		StopWords sw = new StopWords();
 		Consulta consulta = new Consulta(sw.retiraStopWords(textoConsulta));
 		this.iniciarTermosConsulta(consulta);
@@ -49,6 +50,7 @@ public class ProcessadorConsultaService {
 	}
 
 	public List<EntradaRanking> processarConsultaAplicacao(String textoConsulta) {
+		this.mergeListasInvertidas = new Hashtable();
 		StopWords sw = new StopWords();
 		Consulta consulta = new Consulta(sw.retiraStopWords(textoConsulta));
 		this.iniciarTermosConsulta(consulta);
@@ -89,10 +91,13 @@ public class ProcessadorConsultaService {
 					entradaRanking.setSomaQuadradosPesosDocumento(
 							entradaIndiceInvertido.getDocumento().getSomaQuadradosPesos());
 					entradaRanking.setSomaQuadradosPesosConsulta(consulta.getSomaQuadradosPesos());
+					
 					this.mergeListasInvertidas.put(entradaIndiceInvertido.getDocumento().getUrl(), entradaRanking);
 				}
 			}
-		}
+			
+			int i = 0;  
+		} 
 	}
 
 	public void computarSimilaridade() {

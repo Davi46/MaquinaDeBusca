@@ -37,6 +37,7 @@ public class Documento implements Serializable {
 	private Long id;
 
 	@NotBlank
+	@Column(unique=true, nullable=false, length = 200) 
 	private String url;
 
 	@Lob

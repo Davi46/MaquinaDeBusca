@@ -52,4 +52,8 @@ public class DocumentoService{
 	public long recuperaNumeroDeDocumentosPorTermo(String termo) {
 		return dr.recuperaNumeroDeDocumentosPorTermo(termo);
 	}
+	
+	public Documento getByUrl(String url) {
+		return dr.getByUrl(url);
+	}
 }

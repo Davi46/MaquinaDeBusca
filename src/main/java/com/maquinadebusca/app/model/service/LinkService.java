@@ -29,6 +29,9 @@ public class LinkService {
 	@Autowired
 	private LinkRepository lr;
 
+	@Autowired
+	private DocumentoService ds;
+	
 	public Link saveLink(Link link) {
 		return lr.save(link);
 	}
@@ -49,12 +52,14 @@ public class LinkService {
 
 	public Link verificaUltimaColetaURL(String urlDocumento) {
 		Link link = getByLink(urlDocumento);
-		if (link == null) {
+		Documento doc =  ds.getByUrl(urlDocumento); 
+		
+		if (link == null && doc == null) {
 			link = new Link();
 			link.setPodeColetar(true);
 		}
 
-		if (link.getUltimaColeta() != null) {
+		if (link.getUltimaColeta() != null || doc != null) {
 			link.setPodeColetar(false);
 		} else {
 			link.setPodeColetar(true);
