@@ -117,7 +117,8 @@ public class ProcessadorConsultaService {
 		List<EntradaRanking> resp = new ArrayList<EntradaRanking>(ranking.size());
 		EntradaRanking auxi = new EntradaRanking();
 
-		while (ranking.size() > 0) {
+		int i = 0;
+		while (ranking.size() > 0 && i < 20){
 			auxi = ranking.get(0);
 			for (int j = 1; j < ranking.size(); j++) {
 				if (auxi.getSimilaridade() < ranking.get(j).getSimilaridade()) {
@@ -126,6 +127,7 @@ public class ProcessadorConsultaService {
 			}
 			resp.add(auxi);
 			ranking.remove(auxi);
+			i++;
 		}
 
 		return resp;

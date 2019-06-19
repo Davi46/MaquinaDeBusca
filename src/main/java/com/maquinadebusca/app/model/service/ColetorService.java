@@ -65,7 +65,7 @@ public class ColetorService {
 			boolean existeLink = false;
 			do {
 				Link link = linkService.getProxUrlColetar();
-				if (link != null && docService.getDocumentos().size() < 6) {
+				if (link != null && docService.getDocumentos().size() < 100) {
 					this.coletar(link);
 					existeLink = true;
 				} else {
@@ -95,14 +95,13 @@ public class ColetorService {
 				Elements urls = d.select("a[href]");
 
 				documento.setUrl(urlDocumento);
-				documento.setTexto(d.html());
-				documento.setDescricao(d.text());
+				documento.setTexto(d.html()); 
 				int max = 240;
 				if (d.text().length() < 240) {
 					max = d.text().length();
 				}
 				documento.setDescricao(d.text().substring(0, max));
-				documento.setVisao(sw.retiraStopWords(d.text()));
+				documento.setVisao(sw.retiraStopWords(d.text()).toLowerCase());
 				String titulo = recuperaTitulo(d);
 				if (titulo != null) { 
 					documento.setTitulo(titulo);

@@ -8,11 +8,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class StopWords {
-	
+
 	public StopWords() {
-		
+
 	}
-	
+
 	public List<String> lerStopWords() {
 		String palavra;
 		List<String> stopWords = new LinkedList<String>();
@@ -32,26 +32,47 @@ public class StopWords {
 	public String retiraStopWords(String text) {
 		List<String> visaoList = Arrays.asList(text.split(" "));
 		List<String> novoVisao = new ArrayList<>();
-		
 
-		for (String word : visaoList) { 
-			if(!verificaStopWord(word)) {
+		for (String word : visaoList) {
+			if (!verificaStopWord(word)) {
 				novoVisao.add(word.trim());
 			}
 		}
-		
-		//Forma nova visao
+
+		// Forma nova visao
 		StringBuilder nv = new StringBuilder();
 		for (String w : novoVisao) {
-			nv.append(w+" ");
+			nv.append(w + " ");
 		}
-		return nv.toString();  
+		
+		//Retira pontuacao
+		for (String pontuacao : pontuacao()) {
+			nv.toString().toLowerCase().replace(pontuacao, "");
+		}
+
+		return nv.toString();
+	}
+
+	private List<String> pontuacao() {
+		String pontuacao;
+		List<String> stopWords = new LinkedList<String>();
+		try {
+			FileReader fr = new FileReader("stopwords/pontuacaoStop.txt");
+			BufferedReader br = new BufferedReader(fr);
+			while ((pontuacao = br.readLine()) != null) {
+				stopWords.add(pontuacao.toLowerCase().trim());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return stopWords;
 	}
 
 	private boolean verificaStopWord(String word) {
 		List<String> stopWords = lerStopWords();
 		for (String string : stopWords) {
-			if(string.trim().toLowerCase().equals(word.trim().toLowerCase())) {
+			if (string.trim().toLowerCase().equals(word.trim().toLowerCase())) {
 				return true;
 			}
 		}
