@@ -58,7 +58,7 @@ public class IndexadorService {
 		// Cria um vetor por palavras da visao do documento
 		String[] termos = visaoDocumento.split(" ");
 		for (String termo : termos) {
-			if (!termo.equals("")) { // Termo diferente que vazio
+			if (!termo.equals("") && !termo.equals("\n") && !termo.isEmpty()) { // Termo diferente que vazio
 				TermoDocumento termoDocumento = this.getTermo(termo.trim(), documento);
 				int f = this.frequencia(termoDocumento.getTexto(), termos);
 				if (f > documento.getFrequenciaMaxima()) {

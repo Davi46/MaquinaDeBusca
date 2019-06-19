@@ -32,60 +32,46 @@ public class StopWords {
 	public String retiraStopWords(String text) {
 		List<String> visaoList = Arrays.asList(text.split(" "));
 		List<String> novoVisao = new ArrayList<>();
-		char[] pontuacao = pontuacao();
 
 		for (String word : visaoList) {
 			if (!verificaStopWord(word)) {
-				List<String> wo = new ArrayList<>();
-				char[] letras = word.toCharArray();
-				for (char l : letras) { 
-					if (!verificaPontuacao(l)) {
-						wo.add(String.valueOf(l));
-					} 
+				List<String> pontuacao = pontuacao();
+				for (String p : pontuacao) {
+					word = word.replace(p, "");
 				}
 
-				StringBuilder nw = new StringBuilder();
-				for (String w : wo) {
-					nw.append(w + "");
+				word = word.replace("\n", "");
+				if (word != "") {
+					novoVisao.add(word);
 				}
-
-				novoVisao.add(nw.toString());
 			}
 		}
 
 		// Forma nova visao
 		StringBuilder nv = new StringBuilder();
 		for (String w : novoVisao) {
-			if(w != "") {
+			if (w != "") {
 				nv.append(w + " ");
-			} 
+			}
 		}
 
 		return nv.toString().trim();
 	}
 
-	private char[] pontuacao() {
-		String pontuacao;
-		char[] stopWordfs = null;
-
+	private List<String> pontuacao() {
+		String palavra;
+		List<String> stopWords = new LinkedList<String>();
 		try {
 			FileReader fr = new FileReader("stopwords/pontuacaoStop.txt");
 			BufferedReader br = new BufferedReader(fr);
-			stopWordfs = new char[29];
-
-			int i = 0;
-
-			while ((pontuacao = br.readLine()) != null) {
-				char p = pontuacao.toLowerCase().trim().toString().charAt(0);
-				stopWordfs[i] = p;
-				i++;
+			while ((palavra = br.readLine()) != null) {
+				stopWords.add(palavra.toLowerCase().trim());
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return stopWordfs;
+		return stopWords;
 	}
 
 	private boolean verificaStopWord(String word) {
@@ -95,17 +81,6 @@ public class StopWords {
 				return true;
 			}
 		}
-		return false;
-	}
-
-	private boolean verificaPontuacao(char letra) {
-		char[] pontuacao = pontuacao();
-		for (char ponto : pontuacao) {
-			if (ponto == letra) {
-				return true;
-			}
-		}
-
 		return false;
 	}
 }
