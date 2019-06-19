@@ -46,27 +46,34 @@ public class StopWords {
 		}
 		
 		//Retira pontuacao
-		for (String pontuacao : pontuacao()) {
-			nv.toString().toLowerCase().replace(pontuacao, "");
+		for (char pontuacao : pontuacao()) {
+			nv.toString().toLowerCase().replace(pontuacao, '\u0000');
 		}
 
-		return nv.toString();
+		return nv.toString().trim();
 	}
 
-	private List<String> pontuacao() {
-		String pontuacao;
-		List<String> stopWords = new LinkedList<String>();
-		try {
+	private char[] pontuacao() {
+		String pontuacao; 
+		char[] stopWordfs = null ;
+		
+ 		try {
 			FileReader fr = new FileReader("stopwords/pontuacaoStop.txt");
 			BufferedReader br = new BufferedReader(fr);
+			stopWordfs = new char[br.readLine().length()];
+			
+			int i = 0;
+			
 			while ((pontuacao = br.readLine()) != null) {
-				stopWords.add(pontuacao.toLowerCase().trim());
-			}
+				stopWordfs[i] = pontuacao.toLowerCase().trim().toString().charAt(0);
+				i++;
+			} 
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return stopWords;
+		return stopWordfs;
 	}
 
 	private boolean verificaStopWord(String word) {
@@ -77,5 +84,5 @@ public class StopWords {
 			}
 		}
 		return false;
-	}
+	} 
 }

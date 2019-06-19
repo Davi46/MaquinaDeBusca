@@ -95,7 +95,7 @@ public class ColetorService {
 				Elements urls = d.select("a[href]");
 
 				documento.setUrl(urlDocumento);
-				documento.setTexto(d.html()); 
+				documento.setTexto(d.html());
 				int max = 240;
 				if (d.text().length() < 240) {
 					max = d.text().length();
@@ -103,7 +103,7 @@ public class ColetorService {
 				documento.setDescricao(d.text().substring(0, max));
 				documento.setVisao(sw.retiraStopWords(d.text()).toLowerCase());
 				String titulo = recuperaTitulo(d);
-				if (titulo != null) { 
+				if (titulo != null) {
 					documento.setTitulo(titulo);
 					documento.setFrequenciaMaxima(0L);
 					documento.setSomaQuadradosPesos(0L);
@@ -129,18 +129,21 @@ public class ColetorService {
 
 					URL urlH = new URL(urlDocumento);
 					hostService.addLink(documento, urlH.getHost());
- 
+
 					if (link.getDocumento() == null) {
 						link.setDocumento(documento);
 						linkService.salvarLink(link);
-					} 
-				}
-				else { 
+					}
+				} else {
 					linkService.remove(link);
 				}
+			} else {
+				link.setUltimaColeta(LocalDateTime.now());
+				linkService.salvarLink(link);
 			}
 		} catch (Exception e) {
-			System.out.println("\n\n\n Erro ao coletar a página! \n\n\n"); 
+			linkService.remove(link);
+			System.out.println("\n\n\n Erro ao coletar a página! \n\n\n");
 			e.printStackTrace();
 		}
 
