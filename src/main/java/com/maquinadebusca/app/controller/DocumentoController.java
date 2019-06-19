@@ -59,4 +59,10 @@ public class DocumentoController {
 		}
 		return resposta;
 	}
+
+	// Request for: http://localhost:8080/documento/retirarStopWords
+	@GetMapping(value = "/retirarStopWords", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity retirarStopWords() {
+		return new ResponseEntity(docService.retirarStopWords(), HttpStatus.OK);		
+	}
 }

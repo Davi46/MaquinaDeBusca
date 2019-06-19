@@ -6,10 +6,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 
 import com.maquinadebusca.app.model.Documento;
 import com.maquinadebusca.app.model.Link;
 import com.maquinadebusca.app.model.repository.DocumentoRepository;
+
+import Util.StopWords;
 
 @Service
 public class DocumentoService{
@@ -55,5 +58,16 @@ public class DocumentoService{
 	
 	public Documento getByUrl(String url) {
 		return dr.getByUrl(url);
+	}
+
+	public boolean retirarStopWords() {
+		List<Documento> docs = dr.findAll();
+		StopWords sw = new StopWords();
+		for (Documento documento : docs) {
+			String nv = sw.retiraStopWords(documento.getVisao());
+			documento.setVisao(nv);
+			dr.save(documento);
+		}
+		return true;
 	}
 }

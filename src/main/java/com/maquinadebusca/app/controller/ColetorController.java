@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.maquinadebusca.app.mensagem.Mensagem;
 import com.maquinadebusca.app.model.Documento;
+import com.maquinadebusca.app.model.Usuario;
 import com.maquinadebusca.app.model.service.ColetorService; 
 import java.net.MalformedURLException;
 import java.util.List; 
@@ -24,12 +26,21 @@ public class ColetorController {
 	@GetMapping(value = "/iniciar", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity iniciar() throws MalformedURLException {
 		ResponseEntity<Object> resposta = null;
-		List<Documento> docs = cs.executar ();
-		if (!docs.isEmpty()) {
-			resposta = new ResponseEntity<Object>(docs, HttpStatus.OK);
-		} else {
-			resposta = new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
+		try {
+			List<Documento> docs = cs.executar ();
+			if (!docs.isEmpty()) {
+				resposta = new ResponseEntity<Object>(docs, HttpStatus.OK);
+			} else {
+				resposta = new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
+			}
+			return resposta; 
+		}catch (Exception e) {
+			resposta = new ResponseEntity<Object>(
+					new Mensagem("erro", "não foi possível iniciar a maquina de busca", e.getMessage()),
+					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return resposta; 
+
+		return resposta;
+		
 	}  
 }
